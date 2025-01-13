@@ -57,7 +57,6 @@ def create_tcp_massage():
     
 
 if __name__ == "__main__":
-
     user_preferences = get_user_preferences()
     info.update(user_preferences)
     info["ip_server"] = listen_for_broadcast()
