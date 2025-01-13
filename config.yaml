@@ -1,0 +1,8 @@
+# Configuration for the broadcast system
+server:
+  port: 12345
+  broadcast_message: "Hello, this is a broadcast message!"
+  broadcast_interval: 2  # Time in seconds between broadcasts
+
+client:
+  buffer_size: 1024
