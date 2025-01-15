@@ -30,7 +30,7 @@ server:
   udp_port: 34567
   tcp_backlog: 5
   file_to_send: "file1.txt"
-  broadcast_ip: "255.255.255.255"
+  broadcast_ip: "192.168.218.255"
 
 files:
   file1: "file1.txt"
