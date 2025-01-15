@@ -98,3 +98,27 @@ def wait_for_exit():
     except KeyboardInterrupt:
         print("\nKeyboard interrupt detected. Closing the program.")
         sys.exit(0)  # Exit the program with a success status code
+
+def print_wired_up_banner():
+    banner = """
+    ██╗    ██╗██████╗ ███████╗██████╗ ██╗██████╗ ██╗   ██╗
+    ██║    ██║██╔══██╗██╔════╝██╔══██╗██║██╔══██╗██║   ██║
+    ██║ █╗ ██║██████╔╝███████╗██████╔╝██║██████╔╝██║   ██║
+    ██║███╗██║██╔═══╝ ╚════██║██╔═══╝ ██║██╔══██╗██║   ██║
+    ╚███╔███╔╝██║     ███████║██║     ██║██████╔╝╚██████╔╝
+     ╚══╝╚══╝ ╚═╝     ╚══════╝╚═╝     ╚═╝╚═════╝  ╚═════╝ 
+                                                          
+                         ⚡ WIRED UP ⚡
+    """
+    print(banner)
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'

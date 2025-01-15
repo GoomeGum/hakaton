@@ -4,6 +4,8 @@ import time
 import packet_formats
 import yaml
 import handler
+from tqdm import tqdm
+from handler import bcolors
 info = {}
 packet_factory = packet_formats.PacketFactory("configs/configs.yaml")
 
@@ -46,21 +48,25 @@ def tcp():
                 total_segment_count, real_size = handler.calculate_segments(file_size,info["server"]["file_to_send"] ,info['general']['buffer_size'])
                 current_segment = 0
                 sent_data_len = 0
+                progress_bar = tqdm(total=total_segment_count, desc="File Transmission Progress", unit="segment")
+
                 while current_segment < total_segment_count:
                     buffer_to_read = handler.read_size(info,real_size,sent_data_len)
                     if(buffer_to_read == 0):
-                        print("the file is smaller then asked, sending what we have")
+                        print(bcolors.WARNING + "the file is smaller then asked, sending what we have" + bcolors.ENDC)
                         break 
                     payload_data = handler.get_file_segment(info['server']['file_to_send'], buffer_to_read , sent_data_len)
                     sent_data_len += len(payload_data)
                     response = packet_factory.build_message('payload',total_segment_count=total_segment_count,current_segment=current_segment,payload_data=payload_data)
                     connection_socket.sendall(response)
-                    print(f"Sent payload segment {current_segment+1} of {total_segment_count} to {address}")
+                    #print(f"Sent payload segment {current_segment+1} of {total_segment_count} to {address}")
                     current_segment += 1
-                print(f"Sent file size {real_size} to {address}")
+                    progress_bar.update(1)
+                print(bcolors.OKGREEN + f"Sent file size {real_size} to {address}"+ bcolors.ENDC)
                 connection_socket.close()
+                progress_bar.close()
         except ValueError:
-            print(f"Received unknown message: {chunk}")
+            print(bcolors.FAIL + f"Received unknown message: {chunk}" + bcolors.ENDC)
         connection_socket.close()
 
 
@@ -72,7 +78,7 @@ def udp():
             chunk, address = server_socket.recvfrom(info['general']['buffer_size'])
             parsed_msg = packet_factory.parse_message(chunk)
         except ValueError:
-            print(f"Received unknown message: {chunk}")
+            print(bcolors.FAIL  +f"Received unknown message: {chunk}"+bcolors.ENDC)
             break
         if parsed_msg["message_type"] == info["request"]["message_type"]:
             file_size = parsed_msg["file_size"]
@@ -83,7 +89,7 @@ def udp():
             while current_segment < total_segment_count:
                 buffer_to_read = handler.read_size(info,real_size,sent_data_len)
                 if(buffer_to_read == 0):
-                    print("the file is smaller then asked, sending what we have")
+                    print(bcolors.WARNING + "the file is smaller then asked, sending what we have"+ bcolors.ENDC)
                     break 
                 payload_data = handler.get_file_segment(info['server']['file_to_send'], buffer_to_read , sent_data_len)
                 sent_data_len += len(payload_data)
@@ -92,7 +98,7 @@ def udp():
                 print(f"Sent payload segment {current_segment+1} of {total_segment_count} to {address}")
                 current_segment += 1
             
-            print(f"Sent file size {real_size} to {address}")
+            print(bcolors.OKGREEN +f"Sent file size {real_size} to {address}" + bcolors.ENDC)
         
     server_socket.close()
         #server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -116,6 +122,7 @@ def run_in_threads():
     udp_thread_obj.join()  
 
 if __name__ == "__main__":
+    handler.print_wired_up_banner()
     local_ip = socket.gethostbyname(socket.gethostname())
     print(f"Server started, listening on IP address {local_ip}")
     read_yaml("configs/configs.yaml")
