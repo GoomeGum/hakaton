@@ -21,7 +21,7 @@ client:
   buffer_size: 1024
   broadcast_port: 12345
   timeout_udp: 1.0
-  timeout_tcp: 1
+  timeout_tcp: 1.0
 
 
 server:
@@ -30,6 +30,7 @@ server:
   udp_port: 34567
   tcp_backlog: 5
   file_to_send: "file1.txt"
+  broadcast_ip: "192.168.1.255"
 
 files:
   file1: "file1.txt"

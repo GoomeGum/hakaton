@@ -18,7 +18,7 @@ def send_broadcast_message():
     # Enable broadcasting mode
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     
-    broadcast_address = ('192.168.1.255', info["server"]["broadcast_port"])
+    broadcast_address = (info["server"]["broadcast_ip"], info["server"]["broadcast_port"])
     offer_packet = packet_factory.build_message('offer',udp_port=info["server"]["udp_port"],tcp_port=info["server"]["tcp_port"])
 
     try:

@@ -63,6 +63,7 @@ def listen_for_broadcast():
  
 def tcp_thread(threadNum):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.settimeout(info["client"]["timeout_tcp"])
     client_socket.connect((info["connection_info"]["ip_server"], info["connection_info"]["server_tcp_port"]))
     request =  packet_factory.build_message('request' ,file_size = info["connection_info"]["file_size"])
     client_socket.sendall(request)
@@ -80,6 +81,11 @@ def tcp_thread(threadNum):
             print("received empty message")
             handler.save_bytes_to_text_file(info['files']['output_file_tcp'], received_data)
             break
+        except socket.timeout:
+            print("No data received for 1 second. Closing transmission.")
+            handler.save_bytes_to_text_file(info['files']['output_file_tcp'], received_data)
+            break
+        
         if parsed_msg["message_type"] == info["payload"]["message_type"]: 
             print(f"Received payload segment {parsed_msg['current_segment']+1} of {parsed_msg['total_segment_count']} from server {info['connection_info']['ip_server']}")
             received_data += parsed_msg['payload_data']
