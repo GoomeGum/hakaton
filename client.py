@@ -142,8 +142,7 @@ def udp_thread(threadNum):
 if __name__ == "__main__":
     data = read_yaml("configs/configs.yaml")
     get_user_preferences()
-    count = 1
-    while count<=1:
+    while True:
         listen_for_broadcast()
         tcp_connections = info["connection_info"]["tcp_connections"]
         udp_connections = info["connection_info"]["udp_connections"]
@@ -160,7 +159,7 @@ if __name__ == "__main__":
         for thread in threads:
             thread.join()
         print("All transfers completed.")
-        count += 1
+
 
 
 
