@@ -1,0 +1,44 @@
+general:
+  cookie: 0xabcddcba
+  buffer_size: 1024
+  
+offer:
+  message_type: 0x2
+  header_size: 9
+  
+request:
+  message_type: 0x1
+  max_file_size: 1024
+  max_file_size_bytes: 8
+  header_size: 13
+
+payload:
+  message_type: 0x4
+  maxpayload_size: 1024
+  header_size: 21
+
+client:
+  buffer_size: 1024
+  broadcast_port: 12345
+  timeout_udp: 1.0
+  timeout_tcp: 1
+
+
+server:
+  broadcast_port: 12345
+  tcp_port: 23456
+  udp_port: 34567
+  tcp_backlog: 5
+  file_to_send: "file1.txt"
+
+files:
+  file1: "file1.txt"
+  file2: "test.txt"
+  file3: "file3.txt"
+  file4: "file4.txt"
+  output_file_tcp: "output_tcp.txt"
+  output_file_udp: "output_udp.txt"
+
+
+
+
